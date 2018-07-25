@@ -1,28 +1,34 @@
 ## （三）函数
 
 函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。
+
 函数能提高应用的模块性，和代码的重复利用率。
+
 你已经知道Python提供了许多内建函数，比如print()。
+
 但你也可以自己创建函数，这被叫做用户自定义函数。
 
-### 自定义函数
+#### 自定义函数
 
 函数名以 def 关键词开头，后接函数标识符名称和圆括号()。
+
 任何传入参数和自变量必须放在圆括号中间。圆括号之间可以用于定义参数。
+
 函数体以冒号起始，并且缩进。
+
 return [表达式] 结束函数，选择性地返回一个值给调用方。不带表达式的 return 相当于返回 None。
 
-### 函数中的参数
+#### 函数中的参数
 
-#### 语法
+#####语法
 
 func(positional_args,keyword_args,*tuple_nonkw_args,**dict_kw_args)
 
-#### 按参数传递方式
+####按参数传递方式
 
 位置参数（定位参数，非关键字参数）：位置顺序十分重要
 
-#### 关键字参数
+####关键字参数
 
 -  位置参数包裹及使用*
 
@@ -33,7 +39,7 @@ func(positional_args,keyword_args,*tuple_nonkw_args,**dict_kw_args)
 -  传递参数时使用包裹
 
 
-#### 按参数的类型
+#####按参数的类型
 
 -  必选(位置参数)
 -  关键字/默认
@@ -378,8 +384,17 @@ print('全局变量',website)
     JulyEdu
     全局变量 julyedu.org
 
-
 ### 5.偏函数 PFA
+
+偏函数 PFA（Partial function application）
+
+使用场景：如果一个函数的参数很多，而在每次调用的时候有些又经常不需要指定时，就可以使用偏函数。
+
+**语法：**partical(func,*args,**keywords) 
+
+**使用：**from functools import partial
+
+**原理：**创建一个新函数，**固定住**原函数的部分参数（可以为位置参数，也可以是关键字参数）
 
 
 ```python
@@ -500,8 +515,18 @@ print(list(sorted(d1.items(),key=lambda x:(x[1]))))
     [('China', 15), ('India', 9), ('Japan', 1.5), ('USA', 2)]
     [('Japan', 1.5), ('USA', 2), ('India', 9), ('China', 15)]
 
-
 ### 8.高阶函数
+
+**函数的引用于调用**
+
+- 引用：访问，变量别名（多个别名引用）
+- 调用：()
+
+函数对象可以被引用，也可以作为参数被传入或作为结果被返回
+
+**高阶函数：**一个函数接收另一个函数作为参数
+
+**回调函数：**函数作为调用函数的结果返回
 
 
 ```python
@@ -553,6 +578,21 @@ callbackfunc(53,5,33)
 
 ### 9.BIFS0高阶函数
 
+**filter:**对每个元素做过滤
+
+**map:**对每个函数做映射
+
+**reduce:**两两转换传给func
+
+Python 3.x 中，reduce() 函数已经从全局名字空间移除，它和 partical() 一样放在 functools 模块中，使用前需要调用。
+
+**匿名函数 lambda:**
+
+- 使用场景：返回简单，不需要专门定义函数
+- 特点：简洁，同一行定义体+声明。不用写return
+- 定义：定义后，赋值给一个变量，做正常函数使用。lambda 关键字定义在高阶函数参数位上
+- 语法：lambda(args1,args2,argsN):expression
+
 
 ```python
 l1=[2,3,5,7,3,4,5,9,'julyedu.com',[2,3,3],5,2]
@@ -589,8 +629,25 @@ print(list(map(lambda x:(x,l1.count(x)),l1)))
     ['abc']
     [(1, 1), (61, 1), (62, 1)]
 
+### 10.闭包(Closure)
 
-### 10.闭包
+**闭包的概念：**
+
+- 涉及嵌套函数时才有闭包问题
+- 内层函数引用了外层函数的变量（参数），然后返回内层函数的情况，称为闭包。
+- 这些外层空间中被引用的变量叫做这个函数的环境变量。
+- 环境变量和这个非全局函数一起构成了闭包。
+
+**闭包的特点：**函数会记住外层函数的变量
+
+````python
+def foo1(args):
+    def foo2():
+        pass
+    return foo2
+````
+
+**闭包的特点：**函数会记住外层函数的变量
 
 
 ```python
@@ -617,8 +674,17 @@ print(foo1([5,3,8])())
     nums_in_function此时在是foo1中，可以被访问： [5, 3, 8]
     8
 
-
 ### 11.装饰器
+
+**定义：**以函数作参数并返回一个替换函数的可执行函数
+
+**简单理解：**
+
+- 装饰器的作用就是为已存在的对象添加额外功能
+- 为一个函数增加一个装饰（用另一个函数装饰）
+- 本质上就一个返回函数的高阶函数
+
+**应用：**给函数动态增加功能（函数）
 
 
 ```python
@@ -740,3 +806,273 @@ foo1()
     the foo1 result: this is foo1 function--
     extra: 2018-07-25 15:29:42.163103
 
+### 12.练习
+
+定义一个函数，接收任意3个数字的输入，并按顺序从小到大输出
+
+
+```python
+def func(*args):
+    print(type(args))
+    print(sorted(args))
+
+func(5,2,3)
+```
+
+    <class 'tuple'>
+    [2, 3, 5]
+
+
+要求创建一个函数，它可以接收，位置参数，不定长位置参数，不定长关键词参数，并按要求输出 。
+
+ 输入班级名，班级特色(如’勤奋’,’颜值高’)等等不同特色，班级不同同学的姓名与年龄。
+
+ 要求输出，班级名，班级特色，班级成员，班级成员的平均年龄。
+
+
+```python
+def scoreReport(name,age,*args,course='python',**kwargs):
+    print('个人信息:',name,age)
+    for item in args:
+        print(item)
+    print('课程信息:',course)
+    print('每节课成绩:')
+    for key,value in kwargs.items():
+        print (key,value)
+        
+scoreReport('xiaoming',22,'高中部','三年二班',Lesson1=80,Lesson2=85)
+
+#func(positional_args,keyword_args,*tuple_nonkw_args,**dict_kw_args)：
+def func(class_name,*args,**kwargs):
+    print('班级名:',class_name)
+    print('班级特色')
+    for item in args:
+        print(item)
+    print('学生信息:')
+    curSum=0
+    for key,value in kwargs.items():
+        print(key,value)
+        if(type(value)==int):
+            curSum+=value
+    print(curSum/(len(kwargs.items())/2))
+    
+func('三年二班','勤奋','颜值高',name='zhangsan',age=20,name1='lisi',age1=22)
+
+
+
+```
+
+    个人信息: xiaoming 22
+    高中部
+    三年二班
+    课程信息: python
+    每节课成绩:
+    Lesson1 80
+    Lesson2 85
+    班级名: 三年二班
+    班级特色
+    勤奋
+    颜值高
+    学生信息:
+    name zhangsan
+    age 20
+    name1 lisi
+    age1 22
+    21.0
+
+
+使用reduce函数实现找出一组数字列表中的最大值
+
+
+```python
+from functools import reduce
+reduce(lambda x,y:max(x,y),[1,2,3,4,5,6])
+```
+
+
+    6
+
+求1000以内能同时被3和7整除的数有哪些
+要求使用map和filter函数
+
+语法：filter(function,list)
+函数f的作用是对每个元素进行判断，返回true或false，true表示留下，false表示过滤
+filter()根据判断结果自动过滤掉不符合条件的元素，返回由符合条件元素组成的新list。
+filter(lambda x:True if type(x)==str else False,l2)
+
+
+```python
+#filter
+def func(n):
+    if n%21==0:
+        return n
+    else:
+        pass 
+
+print(list(filter(func,range(1001))))
+
+a=list(map(func,range(1001)))
+print([i for i in a if i])
+```
+
+    [21, 42, 63, 84, 105, 126, 147, 168, 189, 210, 231, 252, 273, 294, 315, 336, 357, 378, 399, 420, 441, 462, 483, 504, 525, 546, 567, 588, 609, 630, 651, 672, 693, 714, 735, 756, 777, 798, 819, 840, 861, 882, 903, 924, 945, 966, 987]
+    [21, 42, 63, 84, 105, 126, 147, 168, 189, 210, 231, 252, 273, 294, 315, 336, 357, 378, 399, 420, 441, 462, 483, 504, 525, 546, 567, 588, 609, 630, 651, 672, 693, 714, 735, 756, 777, 798, 819, 840, 861, 882, 903, 924, 945, 966, 987]
+
+
+体现闭包的思想，创建一个三层嵌套的函数，并调用。
+
+
+```python
+def first(first):
+    a=first
+    def second(a):
+        b=a
+        def third(b):
+            print('third-->',b)
+        print('second-->',a,third(a))
+    print('first-->',a,second(a))
+    
+first('first')
+```
+
+    third--> first
+    second--> first None
+    first--> first None
+
+
+请以round函数，定义一个偏函数roundN，调用为输入一个数字N，返回圆周率后N位的数字(提示:import math math.pi)
+请以sorted函数，定义一个偏函数sortedDESC，结果为输入一个序列，返回为按降序排列后序列
+
+
+```python
+import functools
+import math
+def roundN(n):
+    return round(math.pi,n)
+print(roundN(15))
+
+l1=[1,5,6,4,2]
+def sortedDESC(l1):
+    return sorted(l1,reverse=True)
+print(sortedDESC(l1))
+```
+
+    3.141592653589793
+    [6, 5, 4, 2, 1]
+
+要求使用map与filter函数，输出一个输入字符串里每个字符出现的次数
+
+
+```python
+l1=input()
+def myMap(l1):
+    return dict(map(lambda x:(x,l1.count(x)),l1))
+print(myMap(l1))
+```
+
+    dsjkhsdalmvadfs
+    {'d': 3, 's': 3, 'j': 1, 'k': 1, 'h': 1, 'a': 2, 'l': 1, 'm': 1, 'v': 1, 'f': 1}
+
+
+创建一个能够快速排序的递归函数
+
+
+```python
+l1=[3,5,2,6,0,3,1,3,5,7,8,9]
+l2=[]
+k=0
+def my_sort(l1):
+    if len(l1)==1:
+        l2.append(l1[0])
+    else:
+        k=l1.index(min(l1))
+        l2.append(l1[k])
+        l1.pop(k)
+        my_sort(l1)
+    return l2
+my_sort(l1)
+```
+
+
+    [0, 1, 2, 3, 3, 3, 5, 5, 6, 7, 8, 9]
+
+创建一个能打印一个字典中包含所有字典对象的递归函数
+
+
+```python
+def my_dict(d):
+    for key,value in d.items():
+        print(key)
+        if type(value)==dict:
+           my_dict(value)
+        else:
+            print(value)                                                                    
+                                                                                
+dic={"北京":{"东城": ["天坛", "东单", "王府井"],"西城": ["西单", "军博", "复兴门"],},
+     "上海":{"杨浦":['五角场','政通路','世界路']},
+    "天津":['天津港']}
+my_dict(dic)                                                                                                                                                      
+                                                                                
+```
+
+    北京
+    东城
+    ['天坛', '东单', '王府井']
+    西城
+    ['西单', '军博', '复兴门']
+    上海
+    杨浦
+    ['五角场', '政通路', '世界路']
+    天津
+    ['天津港']
+
+
+编写一个生成器，实现fib数列的效果
+f(0) = 1,
+f(1) = 1,
+f(n) = f(n-1) + f(n-2)
+
+
+```python
+def fib(num):
+    n,a,b = 0,0,1
+    while n<num:
+        yield b
+        a,b = b,a+b
+        n +=1
+ 
+for n in fib(5):
+    print(n)
+```
+
+    1
+    1
+    2
+    3
+    5
+
+创建一个能接收不定长位置参数（数字）函数，返回是所有参数的和。
+
+现要求在这个函数每次调用时都有进行屏幕打印（该函数被调用）。
+
+请在不改动这个函数内部及调用的前提下实现。
+
+
+```python
+def print_name(func):
+    def inner(*args,**kwargs):
+        return func(*args,**kwargs)
+    return inner
+
+@print_name
+def summary(*args):
+    n=0
+    sum=0
+    for n in args:
+        sum+=n
+    return sum
+
+print(summary(1,3,5,6,8,2,4))
+```
+
+    29
