@@ -1,0 +1,2 @@
+New line #1 hello world
+Line #2 life is not easy
